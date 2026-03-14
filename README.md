@@ -1,6 +1,6 @@
 # Fly.io Go Example
 
-## Deploy to Fly.io
+## First-Time Launch
 1. Install flyctl and login:
    ```bash
    fly auth login
@@ -22,7 +22,27 @@
    ```bash
    fly apps open
    ```
-7. When done, remove the app:
+
+## Relaunch
+1. Bootstrap the app without deploying:
+   ```bash
+   fly launch --no-deploy
+   ```
+2. Load the required app secrets from `.env`:
+   ```bash
+   grep -v '^#' .env | fly secrets import --stage
+   ```
+3. Deploy using the generated `fly.toml`:
+   ```bash
+   fly deploy
+   ```
+4. Open the deployed app:
+   ```bash
+   fly apps open
+   ```
+
+## Cleanup
+1. When done, remove the app:
    ```bash
    fly apps destroy <app>
    ```
