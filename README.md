@@ -5,16 +5,31 @@
    ```bash
    fly auth login
    ```
-2. Bootstrap the app (first time deploys and provisions resources):
+2. Bootstrap the app without deploying:
    ```bash
-   fly launch
+   fly launch --no-deploy
    ```
-3. For subsequent updates, deploy using the existing `fly.toml`:
+3. Create the required S3 bucket. This also adds the required secrets to the app:
+   ```bash
+   fly storage create --name flyio-go-example --public
+   ```
+4. Upload a file named `file.txt` to the bucket using the Tigris UI.
+5. Deploy using the generated `fly.toml`:
    ```bash
    fly deploy
    ```
-4. Visit the allocated https://<app>.fly.dev URL.
-5. When done, remove the app:
+6. Open the deployed app:
+   ```bash
+   fly apps open
+   ```
+7. When done, remove the app:
    ```bash
    fly apps destroy <app>
    ```
+
+Note: The Docker image must install `ca-certificates` so the app can make HTTPS requests to Tigris.
+
+## Run Locally
+```bash
+env $(grep -v '^#' .env | xargs) go run .
+```
